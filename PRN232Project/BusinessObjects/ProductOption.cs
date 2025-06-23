@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PRN232Project.Entities
+namespace BusinessObjects
 {
     [Table("product_options")]
     public class ProductOption

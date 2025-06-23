@@ -1,4 +1,4 @@
-﻿namespace PRN232Project.Entities
+﻿namespace BusinessObjects
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

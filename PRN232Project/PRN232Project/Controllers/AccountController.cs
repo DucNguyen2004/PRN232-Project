@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PRN232Project.Dtos;
+using PRN232Project.DTOs;
 using PRN232Project.Services;
 
 namespace PRN232Project.Controllers
@@ -31,11 +31,13 @@ namespace PRN232Project.Controllers
         [HttpPost("Refresh")]
         public async Task<ActionResult<LoginResponseDto?>> Refresh([FromBody] RefreshRequestDto request)
         {
-            if (string.IsNullOrWhiteSpace(request.Token))
-                return BadRequest("Invalid Token");
+            //if (string.IsNullOrWhiteSpace(request.Token))
+            //    return BadRequest("Invalid Token");
 
-            var result = await _jwtService.ValidateRefreshToken(request.Token);
-            return result is not null ? result : Unauthorized();
+            //var result = await _jwtService.ValidateRefreshToken(request.Token);
+            //return result is not null ? result : Unauthorized();
+
+            return Unauthorized();
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PRN232Project.Entities
+namespace BusinessObjects
 {
-    [Table("categories")]
-    public class Category
+    [Table("options")]
+    public class Option
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
-        public bool Status { get; set; }
+        public ICollection<ProductOption> ProductOptions { get; set; }
+        public ICollection<OptionValue> OptionValues { get; set; }
     }
 }

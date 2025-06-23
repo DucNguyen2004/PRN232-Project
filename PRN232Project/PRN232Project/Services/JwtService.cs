@@ -1,9 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using PRN232Project.Dtos;
-using PRN232Project.Entities;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using BusinessObjects;
+using Microsoft.IdentityModel.Tokens;
+using PRN232Project.DTOs;
 
 namespace PRN232Project.Services
 {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PRN232Project.Entities
+namespace BusinessObjects
 {
     [Table("products")]
     public class Product

@@ -1,4 +1,4 @@
-﻿namespace PRN232Project.Dtos
+﻿namespace PRN232Project.DTOs
 {
     public class LoginResponseDto
     {
