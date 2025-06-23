@@ -1,0 +1,168 @@
+﻿@page
+@model FUNewsManagement.Pages.Staff.ManageCategoriesModel
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+
+<!-- Sidebar -->
+<aside class="col-md-2 bg-dark text-white vh-100 p-3 position-fixed">
+    <h4 class="fw-bold">Staff Panel</h4>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Staff/Categories/Index" class="text-white text-decoration-none">Manage Categories</a>
+        </li>
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Staff/News/Index" class="text-white text-decoration-none">Manage News</a>
+        </li>
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Staff/Profile" class="text-white text-decoration-none">Profile</a>
+        </li>
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Staff/News/History" class="text-white text-decoration-none">News History</a>
+        </li>
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Account/Logout" class="text-white text-decoration-none">Logout</a>
+        </li>
+    </ul>
+</aside>
+
+<!-- Main Content -->
+<main class="col-md-10 ms-auto p-4" style="overflow-y: auto; height: 100vh;">
+    <h2>Manage Categories</h2>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createCategoryModal">Add Category</button>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model.Categories)
+            {
+                <tr data-id="@category.CategoryId">
+                    <td>@category.CategoryId</td>
+                    <td class="category-name">@category.CategoryName</td>
+                    <td class="category-desc">@category.CategoryDesciption</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal" onclick="loadEditForm(@category.CategoryId)">Edit</button>
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" onclick="confirmDelete(@category.CategoryId)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>
+
+<!-- Create Category Modal -->
+<div class="modal fade" id="createCategoryModal" tabindex="-1" aria-labelledby="createCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-page-handler="Create" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" name="CategoryName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category Description</label>
+                        <input type="text" class="form-control" name="CategoryDesciption" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Category Modal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-page-handler="Edit" method="post">
+                    <input type="hidden" id="editCategoryId" name="CategoryId">
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="editCategoryName" name="CategoryName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category Description</label>
+                        <input type="text" class="form-control" id="editCategoryDesc" name="CategoryDesciption" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Category Modal -->
+<div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this category?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-page-handler="Delete" id="deleteForm">
+                    <input type="hidden" name="id" id="deleteCategoryId" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadEditForm(categoryId) {
+        let row = document.querySelector(`tr[data-id='${categoryId}']`);
+        if (row) {
+            document.getElementById("editCategoryId").value = categoryId;
+            document.getElementById("editCategoryName").value = row.querySelector(".category-name").textContent.trim();
+            document.getElementById("editCategoryDesc").value = row.querySelector(".category-desc").textContent.trim();
+        }
+    }
+
+    let deleteCategoryId = null;
+        function confirmDelete(categoryId) {
+        document.getElementById("deleteCategoryId").value = categoryId;
+        new bootstrap.Modal(document.getElementById("deleteCategoryModal")).show();
+    }
+
+    document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+        if (!deleteCategoryId) return;
+        fetch(`/Staff/ManageCategories?handler=Delete&id=${deleteCategoryId}`, { method: "POST" })
+            .then(response => {
+                if (!response.ok) throw new Error("Category cannot be deleted.");
+                alert("Category deleted successfully!");
+                location.reload();
+            })
+            .catch(error => alert(error.message));
+    });
+</script>

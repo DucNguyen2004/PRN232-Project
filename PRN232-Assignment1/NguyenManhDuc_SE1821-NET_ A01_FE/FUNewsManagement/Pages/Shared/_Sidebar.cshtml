@@ -1,0 +1,35 @@
+﻿@{
+    var categories = ViewBag.Categories as List<BusinessObjects.Category>;
+    var tags = ViewBag.Tags as List<BusinessObjects.Tag>;
+}
+
+<aside class="col-md-3 col-lg-2 bg-dark text-white vh-100 p-3 position-fixed" style="overflow-y: auto;">
+    <h4 class="fw-bold">Categories</h4>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-controller="News" asp-action="Index" class="text-white text-decoration-none">All News</a>
+        </li>
+        @if (categories != null)
+        {
+            @foreach (var category in categories)
+            {
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a asp-controller="News" asp-action="Index" asp-route-categoryId="@category.CategoryId" class="text-white text-decoration-none">
+                        @category.CategoryName
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+
+    <h4 class="fw-bold mt-4">Tags</h4>
+    <div>
+        @if (tags != null)
+        {
+            @foreach (var tag in tags)
+            {
+                <a asp-controller="News" asp-action="Index" asp-route-tagId="@tag.TagId" class="badge bg-secondary me-1">@tag.TagName</a>
+            }
+        }
+    </div>
+</aside>

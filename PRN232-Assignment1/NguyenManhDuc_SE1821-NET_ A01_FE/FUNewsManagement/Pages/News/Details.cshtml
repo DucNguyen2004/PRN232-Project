@@ -1,0 +1,59 @@
+﻿@page "{id}"
+@model FUNewsManagement.Pages.News.DetailsModel
+@{
+    ViewData["Title"] = Model.News.NewsTitle;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-md-3 col-lg-2 bg-dark text-white vh-100 p-3 position-fixed" style="overflow-y: auto;">
+            <h4 class="fw-bold">Categories</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a asp-controller="News" asp-action="Index" class="text-white text-decoration-none">All News</a>
+                </li>
+                @if (Model.Categories != null)
+                {
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li class="list-group-item bg-dark text-white border-0">
+                            <a asp-controller="News" asp-action="Index" asp-route-categoryId="@category.CategoryId" class="text-white text-decoration-none">
+                                @category.CategoryName
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+
+            <h4 class="fw-bold mt-4">Tags</h4>
+            <div>
+                @if (Model.Tags != null)
+                {
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <a asp-controller="News" asp-action="Index" asp-route-tagId="@tag.TagId" class="badge bg-secondary me-1">@tag.TagName</a>
+                    }
+                }
+            </div>
+        </aside>
+
+        <main class="col-md-9 col-lg-10 ms-auto p-4" style="overflow-y: auto; height: 100vh;">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">@Model.News.NewsTitle</h2>
+                    <p class="text-muted">
+                        <strong>Category:</strong> @(Model.News.Category?.CategoryName ?? "Uncategorized")
+                        <br>
+                        <strong>Published:</strong> @Model.News.CreatedDate?.ToString("dd MMMM, yyyy")
+                    </p>
+                    <hr>
+                    <p class="card-text">@Html.Raw(Model.News.NewsContent)</p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-page="/News/Index" class="btn btn-secondary">Back to News</a>
+            </div>
+        </main>
+    </div>
+</div>

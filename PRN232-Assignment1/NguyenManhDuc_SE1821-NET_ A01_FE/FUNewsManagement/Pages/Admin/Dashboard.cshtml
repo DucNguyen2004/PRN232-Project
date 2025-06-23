@@ -1,0 +1,11 @@
+﻿@page
+@model FUNewsManagement.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+<ul>
+    <li><a asp-page="/Admin/ManageAccounts" class="btn btn-primary">Manage Accounts</a></li>
+    <li><a asp-page="/Admin/Report" class="btn btn-secondary">View Reports</a></li>
+</ul>

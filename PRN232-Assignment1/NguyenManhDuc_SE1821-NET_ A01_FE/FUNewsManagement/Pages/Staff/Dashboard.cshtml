@@ -1,0 +1,27 @@
+﻿@page
+@model FUNewsManagement.Pages.Staff.DashboardModel
+@{
+    ViewData["Title"] = "Staff Dashboard";
+}
+
+<!-- Sidebar -->
+<aside class="col-md-2 bg-dark text-white vh-100 p-3 position-fixed">
+    <h4 class="fw-bold">Staff Panel</h4>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Staff/ManageCategories" class="text-white text-decoration-none">Manage Categories</a>
+        </li>
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Staff/ManageNewsArticle" class="text-white text-decoration-none">Manage News</a>
+        </li>
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Staff/Profile" class="text-white text-decoration-none">Profile</a>
+        </li>
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Staff/NewsHistory" class="text-white text-decoration-none">News History</a>
+        </li>
+        <li class="list-group-item bg-dark text-white border-0">
+            <a asp-page="/Account/Logout" class="text-white text-decoration-none">Logout</a>
+        </li>
+    </ul>
+</aside>

@@ -1,0 +1,80 @@
+﻿@page
+@model FUNewsManagement.Pages.Staff.NewsHistoryModel
+@{
+    ViewData["Title"] = "My News History";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <aside class="col-md-2 bg-dark text-white vh-100 p-3 position-fixed">
+            <h4 class="fw-bold">Staff Panel</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a asp-page="/Staff/ManageCategories" class="text-white text-decoration-none">Manage Categories</a>
+                </li>
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a asp-page="/Staff/ManageNewsArticle" class="text-white text-decoration-none">Manage News</a>
+                </li>
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a asp-page="/Staff/Profile" class="text-white text-decoration-none">Profile</a>
+                </li>
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a asp-page="/Staff/NewsHistory" class="text-white text-decoration-none">News History</a>
+                </li>
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a asp-page="/Account/Logout" class="text-white text-decoration-none">Logout</a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="col-md-9 col-lg-10 ms-auto p-4">
+            <div class="container mt-4">
+                <h2>My News History</h2>
+
+                @if (!Model.NewsArticles.Any())
+                {
+                    <div class="alert alert-info">You have not created any news articles yet.</div>
+                }
+                else
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Created Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var news in Model.NewsArticles)
+                            {
+                                <tr>
+                                    <td>@news.NewsTitle</td>
+                                    <td>@(news.Category?.CategoryName ?? "Uncategorized")</td>
+                                    <td>@news.CreatedDate?.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        @if (news.NewsStatus == true)
+                                        {
+                                            <span class="badge bg-success">Published</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">Draft</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-page="/News/Details" asp-route-id="@news.NewsArticleId" class="btn btn-primary btn-sm">View</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </main>
+    </div>
+</div>
