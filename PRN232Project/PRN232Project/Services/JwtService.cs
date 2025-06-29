@@ -2,8 +2,8 @@
 using System.Security.Claims;
 using System.Text;
 using BusinessObjects;
+using DTOs;
 using Microsoft.IdentityModel.Tokens;
-using PRN232Project.DTOs;
 
 namespace PRN232Project.Services
 {

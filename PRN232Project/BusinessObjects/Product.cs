@@ -8,14 +8,14 @@ namespace BusinessObjects
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
 
         [Required]
-        public long CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
@@ -42,3 +42,4 @@ namespace BusinessObjects
         public ICollection<ProductImage> ProductImages { get; set; }
         public ICollection<ProductOption> ProductOptions { get; set; }
     }
+}

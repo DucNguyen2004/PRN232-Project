@@ -8,7 +8,7 @@
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(256)]
@@ -18,7 +18,7 @@
         public bool IsDefault { get; set; }
 
         [Required]
-        public long UserId { get; set; }
+        public int UserId { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }

@@ -8,22 +8,22 @@ namespace BusinessObjects
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        public long CouponId { get; set; }
+        public int CouponId { get; set; }
 
         [ForeignKey("CouponId")]
         public Coupon Coupon { get; set; }
 
         public string Type { get; set; } // e.g., category, product, total, ship
 
-        public long? CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-        public long? ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         [ForeignKey("ProductId")]
         public Product Product { get; set; }

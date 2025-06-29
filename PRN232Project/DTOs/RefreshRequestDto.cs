@@ -1,4 +1,4 @@
-﻿namespace PRN232Project.DTOs
+﻿namespace DTOs
 {
     public class RefreshRequestDto
     {
