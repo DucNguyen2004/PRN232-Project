@@ -1,6 +1,6 @@
 ﻿using DTOs;
 
-namespace PRN232Project
+namespace PRN232Project.Utils
 {
     public class GlobalExceptionMiddleware
     {

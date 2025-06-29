@@ -1,4 +1,4 @@
-﻿namespace PRN232Project
+﻿namespace PRN232Project.Utils
 {
     [Serializable]
     public class ProblemException : Exception
