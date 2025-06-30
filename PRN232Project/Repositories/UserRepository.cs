@@ -23,7 +23,11 @@ namespace Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.Roles)
+                .Include(u => u.Addresses)
+                .Include(u => u.Orders)
+                .ToListAsync();
         }
 
         public async Task<User> AddAsync(User user)
@@ -46,6 +50,13 @@ namespace Repositories
 
             user.Id = tracked.Id;
             _context.Entry(tracked).CurrentValues.SetValues(user);
+
+            tracked.Roles.Clear();
+            foreach (var role in user.Roles)
+            {
+                tracked.Roles.Add(role);
+            }
+
             await _context.SaveChangesAsync();
         }
 

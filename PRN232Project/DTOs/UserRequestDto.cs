@@ -10,6 +10,7 @@
         public DateTime? Dob { get; set; }
         public string Gender { get; set; }
         public string Status { get; set; } = "ACTIVE";
+        public List<int> RoleIds { get; set; } = new List<int>();
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

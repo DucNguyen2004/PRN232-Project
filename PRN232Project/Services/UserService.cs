@@ -7,10 +7,12 @@ namespace Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _roleRepository = roleRepository;
         }
 
         public async Task<UserResponseDto> GetUserByIdAsync(int id)
@@ -25,14 +27,24 @@ namespace Services
             return users.Select(user => Mappers.UserMapper.ToDTO(user));
         }
 
-        public async Task<User> CreateUserAsync(UserRequestDto createUserDto)
+        public async Task<User> CreateUserAsync(UserRequestDto dto)
         {
-            return await _userRepository.AddAsync(Mappers.UserMapper.ToEntity(createUserDto));
+            var user = Mappers.UserMapper.ToEntity(dto);
+
+            var roles = await _roleRepository.GetAllAsync();
+            user.Roles = roles.Where(r => dto.RoleIds.Contains(r.Id)).ToList();
+
+            return await _userRepository.AddAsync(user);
         }
 
-        public async Task UpdateUserAsync(int id, UserRequestDto updateUserDto)
+        public async Task UpdateUserAsync(int id, UserRequestDto dto)
         {
-            await _userRepository.UpdateAsync(id, Mappers.UserMapper.ToEntity(updateUserDto));
+            User updatedUser = Mappers.UserMapper.ToEntity(dto);
+
+            var roles = await _roleRepository.GetAllAsync();
+            updatedUser.Roles = roles.Where(r => dto.RoleIds.Contains(r.Id)).ToList();
+
+            await _userRepository.UpdateAsync(id, updatedUser);
         }
 
         public async Task DeleteUserAsync(int id)
