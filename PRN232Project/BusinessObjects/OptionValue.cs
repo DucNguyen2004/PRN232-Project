@@ -17,5 +17,7 @@ namespace BusinessObjects
 
         [ForeignKey("OptionId")]
         public Option Option { get; set; }
+
+        public ICollection<ProductOption> ProductOptions { get; set; }
     }
 }

@@ -12,7 +12,6 @@ namespace BusinessObjects
 
         public string Name { get; set; }
 
-        public ICollection<ProductOption> ProductOptions { get; set; }
         public ICollection<OptionValue> OptionValues { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace BusinessObjects
         public string Description { get; set; }
 
         [Required]
-        public double Price { get; set; }
+        public int Price { get; set; }
 
         [Required]
         public DateTime CreateAt { get; set; } = DateTime.Now;

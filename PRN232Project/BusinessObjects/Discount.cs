@@ -30,6 +30,6 @@ namespace BusinessObjects
 
         public string ValueType { get; set; } // e.g., percent, fixed
 
-        public double? ValueFixed { get; set; }
+        public int? ValueFixed { get; set; }
     }
 }

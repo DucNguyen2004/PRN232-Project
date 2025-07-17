@@ -15,9 +15,11 @@ namespace BusinessObjects
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
 
-        public int OptionId { get; set; }
+        public int OptionValueId { get; set; }
 
-        [ForeignKey("OptionId")]
-        public Option Option { get; set; }
+        [ForeignKey("OptionValueId")]
+        public OptionValue OptionValue { get; set; }
+
+        public int DeltaPrice { get; set; } = 0;
     }
 }
