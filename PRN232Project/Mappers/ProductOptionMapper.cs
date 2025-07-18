@@ -5,13 +5,22 @@ namespace Mappers
 {
     public class ProductOptionMapper
     {
-        public static ProductOptionResponseDto ToDto(ProductOption entity)
+        public static ProductOptionResponseDto ToDTO(ProductOption entity)
         {
             return new ProductOptionResponseDto
             {
-                Type = entity.OptionValue.Option.Name,
-                Name = entity.OptionValue.Name,
+                Name = entity.OptionValue.Option.Name,
+                Type = entity.OptionValue.Name,
                 DeltaPrice = entity.DeltaPrice
+            };
+        }
+
+        public static ProductOption ToEntity(ProductOptionRequestDto dto)
+        {
+            return new ProductOption
+            {
+                OptionValueId = dto.OptionValueId,
+                DeltaPrice = dto.DeltaPrice
             };
         }
     }

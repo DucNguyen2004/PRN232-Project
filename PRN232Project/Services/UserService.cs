@@ -24,7 +24,7 @@ namespace Services
         public async Task<IEnumerable<UserResponseDto>> GetAllUsersAsync()
         {
             var users = await _userRepository.GetAllAsync();
-            return users.Select(user => Mappers.UserMapper.ToDTO(user));
+            return users.Select(u => Mappers.UserMapper.ToDTO(u));
         }
 
         public async Task<User> CreateUserAsync(UserRequestDto dto)

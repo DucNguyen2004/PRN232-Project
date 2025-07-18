@@ -5,7 +5,7 @@ namespace Mappers
 {
     public class CategoryMapper
     {
-        public static CategoryResponseDto ToDto(Category entity)
+        public static CategoryResponseDto ToDTO(Category entity)
         {
             return new CategoryResponseDto
             {

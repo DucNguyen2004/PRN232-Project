@@ -24,7 +24,7 @@ namespace PRN232Project.Controllers
 
             if (users == null || !users.Any())
             {
-                throw ProblemException.NotFound("No users found.");
+                throw ProblemException.NotFound("No user found.");
             }
 
             return OkResponse(users);
