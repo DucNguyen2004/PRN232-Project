@@ -10,4 +10,8 @@
     <None Include="UserRequestDto.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
+  </ItemGroup>
+
 </Project>

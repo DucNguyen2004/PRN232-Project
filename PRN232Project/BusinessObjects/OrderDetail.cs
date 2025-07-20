@@ -14,7 +14,7 @@ namespace BusinessObjects
         public int Quantity { get; set; }
 
         [Required]
-        public double price { get; set; }
+        public double Price { get; set; }
 
         [Required]
         public int OrderId { get; set; }
