@@ -5,9 +5,9 @@ namespace Mappers
 {
     public static class OrderMapper
     {
-        public static OrderResponseDTO ToOrderResponseDto(Order order)
+        public static OrderResponseDto ToOrderResponseDto(Order order)
         {
-            return new OrderResponseDTO
+            return new OrderResponseDto
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate,
@@ -25,7 +25,7 @@ namespace Mappers
                 OrderDetails = order.OrderDetails.Select(od => ToOrderDetailResponseDto(od)).ToList()
             };
         }
-        public static Order ToOrderEntity(OrderRequestDTO dto, int userId)
+        public static Order ToOrderEntity(OrderRequestDto dto, int userId)
         {
             return new Order
             {
@@ -38,9 +38,9 @@ namespace Mappers
             };
         }
 
-        public static OrderDetailResponseDTO ToOrderDetailResponseDto(OrderDetail orderDetail)
+        public static OrderDetailResponseDto ToOrderDetailResponseDto(OrderDetail orderDetail)
         {
-            return new OrderDetailResponseDTO
+            return new OrderDetailResponseDto
             {
                 Id = orderDetail.Id,
                 Price = orderDetail.price,

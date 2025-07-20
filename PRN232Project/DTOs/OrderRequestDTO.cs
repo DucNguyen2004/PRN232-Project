@@ -1,6 +1,6 @@
 ﻿namespace DTOs
 {
-    public class OrderRequestDTO
+    public class OrderRequestDto
     {
         public DateTime OrderDate { get; set; }
         public string ShippingAddress { get; set; }

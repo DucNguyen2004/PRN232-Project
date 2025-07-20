@@ -34,7 +34,7 @@ namespace Services
             //_couponService = couponService;
         }
 
-        public async Task<List<OrderResponseDTO>> GetOrdersByUserAsync(int userId)
+        public async Task<List<OrderResponseDto>> GetOrdersByUserAsync(int userId)
         {
             var orders = await _orderRepo.GetAllByUserAsync(userId);
             var responses = orders.Select(OrderMapper.ToOrderResponseDto).ToList();
@@ -50,7 +50,7 @@ namespace Services
             return responses;
         }
 
-        public async Task<List<OrderResponseDTO>> GetAllOrdersAsync()
+        public async Task<List<OrderResponseDto>> GetAllOrdersAsync()
         {
             var orders = await _orderRepo.GetAllAsync();
             var responses = orders.Select(OrderMapper.ToOrderResponseDto).ToList();
@@ -66,7 +66,7 @@ namespace Services
             return responses;
         }
 
-        public async Task<OrderResponseDTO> GetOrderDetailsAsync(int orderId, int userId, bool isAdmin)
+        public async Task<OrderResponseDto> GetOrderDetailsAsync(int orderId, int userId, bool isAdmin)
         {
             var order = await _orderRepo.GetByIdAsync(orderId) ?? throw new Exception("Order not found");
 
@@ -82,19 +82,19 @@ namespace Services
             return dto;
         }
 
-        public async Task<List<OrderResponseDTO>> GetOrdersWithFiltersAsync(int userId, DateTime? start, DateTime? end, string? status)
+        public async Task<List<OrderResponseDto>> GetOrdersWithFiltersAsync(int userId, DateTime? start, DateTime? end, string? status)
         {
             var orders = await _orderRepo.GetByUserWithFilters(userId, start, end, status);
             return orders.Select(OrderMapper.ToOrderResponseDto).ToList();
         }
 
-        public async Task<List<OrderResponseDTO>> GetOrdersWithFiltersAdminAsync(DateTime? start, DateTime? end, string? status)
+        public async Task<List<OrderResponseDto>> GetOrdersWithFiltersAdminAsync(DateTime? start, DateTime? end, string? status)
         {
             var orders = await _orderRepo.GetAllWithFilters(start, end, status);
             return orders.Select(OrderMapper.ToOrderResponseDto).ToList();
         }
 
-        public async Task PlaceOrderAsync(OrderRequestDTO request, string? couponCode, int userId)
+        public async Task PlaceOrderAsync(OrderRequestDto request, string? couponCode, int userId)
         {
             var cartItems = await _cartService.GetAllCartItems(userId);
 

@@ -1,6 +1,6 @@
 ﻿namespace DTOs
 {
-    public class OrderResponseDTO
+    public class OrderResponseDto
     {
         public int Id { get; set; }
         public UserResponseDto User { get; set; }
@@ -8,7 +8,7 @@
         public string ShippingAddress { get; set; }
         public string Message { get; set; }
         public string OrderStatus { get; set; }
-        public List<OrderDetailResponseDTO> OrderDetails { get; set; }
+        public List<OrderDetailResponseDto> OrderDetails { get; set; }
         public double DiscountPrice { get; set; }
     }
 }

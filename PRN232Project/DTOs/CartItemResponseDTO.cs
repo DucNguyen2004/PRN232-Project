@@ -1,6 +1,6 @@
 ﻿namespace DTOs
 {
-    public class CartItemResponseDTO
+    public class CartItemResponseDto
     {
         public int Id { get; set; }
         public UserResponseDto User { get; set; }

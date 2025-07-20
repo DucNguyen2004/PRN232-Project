@@ -5,11 +5,11 @@ namespace Mappers
 {
     public class CartItemMapper
     {
-        public static CartItemResponseDTO ToDTO(CartItem cartItem)
+        public static CartItemResponseDto ToDTO(CartItem cartItem)
         {
             if (cartItem == null) return null;
 
-            return new CartItemResponseDTO
+            return new CartItemResponseDto
             {
                 Id = cartItem.Id,
                 Quantity = cartItem.Quantity,
@@ -18,7 +18,7 @@ namespace Mappers
             };
         }
 
-        public static CartItem ToEntity(CartItemRequestDTO requestDTO)
+        public static CartItem ToEntity(CartItemRequestDto requestDTO)
         {
             if (requestDTO == null) return null;
 

@@ -11,14 +11,14 @@ namespace Services
         private readonly IUserRepository _userRepo;
         private readonly IProductRepository _productRepo;
 
-        public async Task<IEnumerable<CartItemResponseDTO>> GetAllCartItems(int userId) // change parameter ?
+        public async Task<IEnumerable<CartItemResponseDto>> GetAllCartItems(int userId) // change parameter ?
         {
             var cartItems = await _cartItemRepo.GetAllCartItems(userId);
 
             return cartItems.Select(x => CartItemMapper.ToDTO(x));
         }
 
-        public async Task<CartItemResponseDTO> AddToCart(CartItemRequestDTO requestDTO)
+        public async Task<CartItemResponseDto> AddToCart(CartItemRequestDto requestDTO)
         {
             if (await _cartItemRepo.ExistsAsync(requestDTO.UserId, requestDTO.Product.Id))
                 return null;

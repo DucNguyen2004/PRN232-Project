@@ -1,6 +1,6 @@
 ﻿namespace DTOs
 {
-    public class OrderDetailResponseDTO
+    public class OrderDetailResponseDto
     {
         public int Id { get; set; }
         public double Price { get; set; }

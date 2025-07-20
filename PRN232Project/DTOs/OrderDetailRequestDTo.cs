@@ -1,6 +1,6 @@
 ﻿namespace DTOs
 {
-    public class OrderDetailRequestDTo
+    public class OrderDetailRequestDto
     {
     }
 }
