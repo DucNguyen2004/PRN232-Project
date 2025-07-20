@@ -21,6 +21,16 @@ namespace Repositories
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email cannot be null or empty.", nameof(email));
+            return await _context.Users
+                .Include(u => u.Roles)
+                .Include(u => u.Addresses)
+                .Include(u => u.Orders)
+                .FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             return await _context.Users

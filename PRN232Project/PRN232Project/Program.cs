@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PRN232Project.Services;
 using PRN232Project.Utils;
 using Repositories;
 using Services;
@@ -49,22 +50,42 @@ namespace PRN232Project
             // 2. Add Authorization
             builder.Services.AddAuthorization();
 
-            builder.Services.AddControllers().AddJsonOptions(options =>
+            builder.Services.AddCors(options =>
             {
-                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.AddPolicy("AllowBlazorLocalhost", policy =>
+                {
+                    policy.WithOrigins(
+                        "https://localhost:7125",  // Keep your existing URL
+                        "http://localhost:5084"  // Add HTTP version if needed
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials(); // Add this if you're sending authentication headers
+                });
             });
+
+            builder.Services
+                .AddControllers().AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    });
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer("Server=(local);Database=PRN232Project;User Id=sa;Password=12345;Encrypt=False;Trusted_Connection=True;TrustServerCertificate=True;"));
 
+            builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICartService, CartService>();
+
+            builder.Services.AddScoped<JwtService>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -109,6 +130,8 @@ namespace PRN232Project
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors("AllowBlazorLocalhost");
 
             app.MapControllers();
 
