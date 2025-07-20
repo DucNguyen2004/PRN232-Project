@@ -31,13 +31,6 @@ namespace BusinessObjects
         public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<WishlistItem> WishlistItems { get; set; }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Option> Options { get; set; }
-        public DbSet<OptionValue> OptionValues { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }
-        public DbSet<ProductOption> ProductOptions { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -136,9 +129,9 @@ namespace BusinessObjects
                       .HasForeignKey(po => po.ProductId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(po => po.Option)
+                entity.HasOne(po => po.OptionValue)
                       .WithMany(o => o.ProductOptions)
-                      .HasForeignKey(po => po.OptionId)
+                      .HasForeignKey(po => po.OptionValueId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -157,6 +150,11 @@ namespace BusinessObjects
                       .WithMany(p => p.CartItems)
                       .HasForeignKey(ci => ci.ProductId)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(ci => ci.ProductOption)
+                    .WithMany(po => po.CartItems)
+                    .HasForeignKey(ci => ci.ProductOptionId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 // Ensure unique cart item per user-product combination
                 entity.HasIndex(ci => new { ci.UserId, ci.ProductId }).IsUnique();
@@ -252,7 +250,7 @@ namespace BusinessObjects
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Quantity).IsRequired();
-                entity.Property(e => e.price).IsRequired();
+                entity.Property(e => e.Price).IsRequired();
 
                 entity.HasOne(od => od.Order)
                       .WithMany(o => o.OrderDetails)

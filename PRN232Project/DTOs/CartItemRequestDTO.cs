@@ -2,7 +2,8 @@
 {
     public class CartItemRequestDto
     {
-        public ProductRequestDTO Product { get; set; }
+        public int ProductId { get; set; }
+        public int ProductOptionId { get; set; }
         public int Quantity { get; set; }
         public int UserId { get; set; }
     }

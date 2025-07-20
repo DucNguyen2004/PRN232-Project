@@ -19,14 +19,14 @@ namespace Mappers
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                Category = CategoryMapper.ToDTO(entity.Category),
+                Category = entity.Category != null ? CategoryMapper.ToDTO(entity.Category) : null,
                 Description = entity.Description,
                 Price = entity.Price,
                 CreateAt = entity.CreateAt,
                 Sold = entity.Sold,
                 Status = entity.Status,
                 Images = entity.ProductImages.Select(img => img.Image).ToList(),
-                Options = entity.ProductOptions.Select(ProductOptionMapper.ToDTO).ToList()
+                Options = entity.ProductOptions != null ? entity.ProductOptions.Select(ProductOptionMapper.ToDTO).ToList() : new List<ProductOptionResponseDto>()
             };
         }
 

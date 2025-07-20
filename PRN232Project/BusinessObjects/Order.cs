@@ -29,9 +29,9 @@ namespace BusinessObjects
         [ForeignKey("UserId")]
         public User User { get; set; }
 
-        public int CouponId { get; set; }
+        public int? CouponId { get; set; }
         [ForeignKey("CouponId")]
-        public Coupon Coupon { get; set; }
+        public Coupon? Coupon { get; set; }
 
         public double DiscountPrice { get; set; }
         public string CancelReason { get; set; }

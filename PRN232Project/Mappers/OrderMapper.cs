@@ -43,7 +43,7 @@ namespace Mappers
             return new OrderDetailResponseDto
             {
                 Id = orderDetail.Id,
-                Price = orderDetail.price,
+                Price = orderDetail.Price,
                 Quantity = orderDetail.Quantity,
                 Product = new ProductResponseDTO
                 {

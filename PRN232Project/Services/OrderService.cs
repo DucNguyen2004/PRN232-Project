@@ -9,29 +9,20 @@ namespace Services
     {
         private readonly OrderRepository _orderRepo;
         private readonly ProductRepository _productRepo;
-        //private readonly ProductIngredientRepository _productIngredientRepo;
         private readonly UserRepository _userRepo;
-        //private readonly ProductImageRepository _productImageRepo;
         private readonly CartService _cartService;
-        //private readonly CouponService _couponService;
 
         public OrderService(
             OrderRepository orderRepo,
             ProductRepository productRepo,
-            //ProductIngredientRepository productIngredientRepo,
             UserRepository userRepo,
-            //ProductImageRepository productImageRepo,
             CartService cartService
-            //CouponService couponService,
             )
         {
             _orderRepo = orderRepo;
             _productRepo = productRepo;
-            //_productIngredientRepo = productIngredientRepo;
             _userRepo = userRepo;
-            //_productImageRepo = productImageRepo;
             _cartService = cartService;
-            //_couponService = couponService;
         }
 
         public async Task<List<OrderResponseDto>> GetOrdersByUserAsync(int userId)
@@ -122,7 +113,7 @@ namespace Services
             //}
 
             var orderDetails = new List<OrderDetail>();
-            foreach (var cartItem in cartItems)
+            foreach (var cartItem in cartItems.CartItems)
             {
                 // ADD LATER 
 

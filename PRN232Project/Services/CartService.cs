@@ -7,51 +7,55 @@ namespace Services
 {
     public class CartService : ICartService
     {
-        private readonly ICartItemRepository _cartItemRepo;
-        private readonly IUserRepository _userRepo;
-        private readonly IProductRepository _productRepo;
+        private readonly ICartItemRepository _cartItemRepository;
 
-        public async Task<IEnumerable<CartItemResponseDto>> GetAllCartItems(int userId) // change parameter ?
+        public CartService(ICartItemRepository cartItemRepository)
         {
-            var cartItems = await _cartItemRepo.GetAllCartItems(userId);
-
-            return cartItems.Select(x => CartItemMapper.ToDTO(x));
+            _cartItemRepository = cartItemRepository;
         }
 
-        public async Task<CartItemResponseDto> AddToCart(CartItemRequestDto requestDTO)
+        public async Task<UserCartResponseDto> GetAllCartItems(int userId) // change parameter ?
         {
-            if (await _cartItemRepo.ExistsAsync(requestDTO.UserId, requestDTO.Product.Id))
-                return null;
+            var cartItems = await _cartItemRepository.GetAllCartItems(userId);
 
-            var item = new CartItem
+            return new UserCartResponseDto
             {
-                UserId = requestDTO.UserId,
-                ProductId = requestDTO.Product.Id,
-                Quantity = requestDTO.Quantity,
+                UserId = userId,
+                CartItems = cartItems.Select(CartItemMapper.ToDTO).ToList()
             };
+        }
 
-            var cartItem = await _cartItemRepo.AddToCartAsync(item);
-
+        public async Task<CartItemResponseDto> GetCartItemById(int cartItemId)
+        {
+            var cartItem = await _cartItemRepository.GetByIdAsync(cartItemId);
             return CartItemMapper.ToDTO(cartItem);
         }
 
-        public async Task<CartItem?> UpdateQuantity(int cartItemId, int quantity)
+        public async Task<CartItem> AddToCart(CartItemRequestDto dto)
         {
-            var item = await _cartItemRepo.GetByIdAsync(cartItemId);
-            if (item == null) return null;
+            return await _cartItemRepository.AddToCartAsync(CartItemMapper.ToEntity(dto));
+        }
 
+        public async Task UpdateQuantity(int cartItemId, int quantity)
+        {
+            var item = await _cartItemRepository.GetByIdAsync(cartItemId);
             item.Quantity = quantity;
-            await _cartItemRepo.UpdateAsync(item);
-            return item;
+            await _cartItemRepository.UpdateAsync(item);
         }
 
         public async Task DeleteCartItem(int cartItemId)
         {
-            await _cartItemRepo.DeleteAsync(cartItemId);
+            await _cartItemRepository.DeleteAsync(cartItemId);
         }
+
         public async Task ClearCart(int userId)
         {
-            await _cartItemRepo.DeleteByUserIdAsync(userId);
+            await _cartItemRepository.DeleteByUserIdAsync(userId);
+        }
+
+        public async Task<bool> IsCartItemExisted(int userId, int productId)
+        {
+            return await _cartItemRepository.ExistsAsync(userId, productId);
         }
     }
 }

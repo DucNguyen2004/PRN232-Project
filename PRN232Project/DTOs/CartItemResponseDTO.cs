@@ -3,8 +3,17 @@
     public class CartItemResponseDto
     {
         public int Id { get; set; }
-        public UserResponseDto User { get; set; }
-        public ProductResponseDTO Product { get; set; }
+        public CartItemProductDto? Product { get; set; }
+        public ProductOptionResponseDto? ProductOption { get; set; }
         public int Quantity { get; set; }
+    }
+
+    public class CartItemProductDto
+    {
+        public int Id { get; set; }
+        public required string Name { get; set; }
+        public int Price { get; set; }
+        public required string Status { get; set; }
+        public required string Image { get; set; }
     }
 }

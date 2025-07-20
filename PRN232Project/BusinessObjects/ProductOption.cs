@@ -21,5 +21,7 @@ namespace BusinessObjects
         public OptionValue OptionValue { get; set; }
 
         public int DeltaPrice { get; set; } = 0;
+
+        public ICollection<CartItem> CartItems { get; set; }
     }
 }

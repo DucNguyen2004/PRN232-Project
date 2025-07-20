@@ -15,7 +15,7 @@
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public required CategoryResponseDto Category { get; set; }
+        public CategoryResponseDto? Category { get; set; }
         public required string Description { get; set; }
         public int Price { get; set; }
         public DateTime CreateAt { get; set; }

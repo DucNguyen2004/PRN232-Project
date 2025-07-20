@@ -15,10 +15,15 @@ namespace Repositories
         public async Task<IEnumerable<CartItem>> GetAllCartItems(int userId) // change parameter ?
         {
             return await _context.CartItems
-                .Where(c => c.User.Id.Equals(userId))
+                .Where(c => c.UserId == userId)
                 .Include(c => c.Product)
+                    .ThenInclude(p => p.ProductImages)
+                .Include(c => c.ProductOption)
+                    .ThenInclude(po => po.OptionValue)
+                        .ThenInclude(ov => ov.Option)
                 .ToListAsync();
         }
+
         public async Task<CartItem?> GetByIdAsync(int id)
         {
             return await _context.CartItems
@@ -31,7 +36,15 @@ namespace Repositories
         {
             _context.CartItems.Add(item);
             await _context.SaveChangesAsync();
-            return item;
+
+            return await _context.CartItems
+                                .Include(ci => ci.User)
+                                .Include(ci => ci.Product)
+                                    .ThenInclude(p => p.ProductImages)
+                                .Include(ci => ci.ProductOption)
+                                    .ThenInclude(po => po.OptionValue)
+                                        .ThenInclude(ov => ov.Option)
+                                .FirstAsync(ci => ci.Id == item.Id);
         }
 
         public async Task UpdateAsync(CartItem item)

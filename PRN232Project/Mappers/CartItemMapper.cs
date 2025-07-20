@@ -5,28 +5,32 @@ namespace Mappers
 {
     public class CartItemMapper
     {
-        public static CartItemResponseDto ToDTO(CartItem cartItem)
+        public static CartItemResponseDto ToDTO(CartItem entity)
         {
-            if (cartItem == null) return null;
-
             return new CartItemResponseDto
             {
-                Id = cartItem.Id,
-                Quantity = cartItem.Quantity,
-                //Product = cartItem.Product != null ? _productMapper.ToResponseDTO(cartItem.Product) : null, // modify later
-                User = cartItem.User != null ? UserMapper.ToDTO(cartItem.User) : null
+                Id = entity.Id,
+                Product = new CartItemProductDto
+                {
+                    Id = entity.Product.Id,
+                    Name = entity.Product.Name,
+                    Price = entity.Product.Price,
+                    Status = entity.Product.Status,
+                    Image = entity.Product.ProductImages?.FirstOrDefault()?.Image ?? string.Empty
+                },
+                ProductOption = entity.ProductOption != null ? ProductOptionMapper.ToDTO(entity.ProductOption) : null,
+                Quantity = entity.Quantity
             };
         }
 
-        public static CartItem ToEntity(CartItemRequestDto requestDTO)
+        public static CartItem ToEntity(CartItemRequestDto dto)
         {
-            if (requestDTO == null) return null;
-
             return new CartItem
             {
-                Quantity = requestDTO.Quantity,
-                UserId = requestDTO.UserId,
-                ProductId = requestDTO.Product?.Id ?? 0
+                Quantity = dto.Quantity,
+                UserId = dto.UserId,
+                ProductId = dto.ProductId,
+                ProductOptionId = dto.ProductOptionId
             };
         }
     }
