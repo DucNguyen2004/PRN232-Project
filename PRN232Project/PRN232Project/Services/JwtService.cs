@@ -66,8 +66,9 @@ namespace PRN232Project.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                new Claim(JwtRegisteredClaimNames.Name, user.Email)
-            }),
+                    new Claim(JwtRegisteredClaimNames.Name, user.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                }),
                 Expires = tokenExpiryTimeStamp,
                 Issuer = issuer,
                 Audience = audience,
@@ -84,6 +85,7 @@ namespace PRN232Project.Services
 
             return new LoginResponseDto
             {
+                UserId = user.Id,
                 Email = user.Email,
                 AccessToken = accessToken,
                 ExpiresIn = (int)(tokenExpiryTimeStamp - DateTime.UtcNow).TotalSeconds,

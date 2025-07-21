@@ -18,7 +18,9 @@ namespace Mappers
                     Status = entity.Product.Status,
                     Image = entity.Product.ProductImages?.FirstOrDefault()?.Image ?? string.Empty
                 },
-                ProductOption = entity.ProductOption != null ? ProductOptionMapper.ToDTO(entity.ProductOption) : null,
+                ProductOptions = entity.ProductOptions?
+                    .Select(ProductOptionMapper.ToDTO)
+                    .ToList(),
                 Quantity = entity.Quantity
             };
         }
@@ -28,9 +30,10 @@ namespace Mappers
             return new CartItem
             {
                 Quantity = dto.Quantity,
-                UserId = dto.UserId,
                 ProductId = dto.ProductId,
-                ProductOptionId = dto.ProductOptionId
+                ProductOptions = dto.ProductOptionIds?
+                    .Select(id => new ProductOption { Id = id })
+                    .ToList() ?? new List<ProductOption>()
             };
         }
     }

@@ -18,7 +18,7 @@ namespace Repositories
                 .Where(c => c.UserId == userId)
                 .Include(c => c.Product)
                     .ThenInclude(p => p.ProductImages)
-                .Include(c => c.ProductOption)
+                .Include(c => c.ProductOptions)
                     .ThenInclude(po => po.OptionValue)
                         .ThenInclude(ov => ov.Option)
                 .ToListAsync();
@@ -41,7 +41,7 @@ namespace Repositories
                                 .Include(ci => ci.User)
                                 .Include(ci => ci.Product)
                                     .ThenInclude(p => p.ProductImages)
-                                .Include(ci => ci.ProductOption)
+                                .Include(ci => ci.ProductOptions)
                                     .ThenInclude(po => po.OptionValue)
                                         .ThenInclude(ov => ov.Option)
                                 .FirstAsync(ci => ci.Id == item.Id);

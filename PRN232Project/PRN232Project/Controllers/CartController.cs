@@ -1,5 +1,7 @@
-﻿using BusinessObjects;
+﻿using System.Security.Claims;
+using BusinessObjects;
 using DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PRN232Project.Utils;
 using Services;
@@ -8,6 +10,7 @@ namespace PRN232Project.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CartController : ApiControllerBase
     {
         private readonly ICartService _cartService;
@@ -17,9 +20,16 @@ namespace PRN232Project.Controllers
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
         }
 
-        [HttpGet("{userId:int}/user")]
-        public async Task<ActionResult<ApiResponseDto<UserCartResponseDto>>> GetCart(int userId)
+        [HttpGet]
+        public async Task<ActionResult<ApiResponseDto<UserCartResponseDto>>> GetCart()
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                throw ProblemException.BadRequest("Invalid or missing user ID in token.");
+            }
+
             var cart = await _cartService.GetAllCartItems(userId);
 
             if (cart == null)
@@ -49,12 +59,18 @@ namespace PRN232Project.Controllers
                 throw ProblemException.BadRequest("Invalid cart item data.");
             }
 
-            if (await _cartService.IsCartItemExisted(dto.UserId, dto.ProductId))
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                throw ProblemException.BadRequest("Invalid or missing user ID in token.");
+            }
+
+            if (await _cartService.IsCartItemExisted(userId, dto.ProductId))
             {
                 throw ProblemException.BadRequest("This product is already in the cart.");
             }
 
-            CartItem cartItem = await _cartService.AddToCart(dto);
+            CartItem cartItem = await _cartService.AddToCart(dto, userId);
             return CreatedResponse(nameof(GetCartItemById), new { id = cartItem.Id }, Mappers.CartItemMapper.ToDTO(cartItem));
         }
 
@@ -82,9 +98,16 @@ namespace PRN232Project.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{userId:int}/clear")]
-        public async Task<ActionResult> ClearCart(int userId)
+        [HttpDelete("clear")]
+        public async Task<ActionResult> ClearCart()
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                throw ProblemException.BadRequest("Invalid or missing user ID in token.");
+            }
+
             await _cartService.ClearCart(userId);
             return NoContent();
         }

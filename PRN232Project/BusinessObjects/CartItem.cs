@@ -25,10 +25,6 @@ namespace BusinessObjects
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
 
-        [Required]
-        public int ProductOptionId { get; set; }
-
-        [ForeignKey("ProductOptionId")]
-        public ProductOption ProductOption { get; set; }
+        public ICollection<ProductOption> ProductOptions { get; set; } = new List<ProductOption>();
     }
 }

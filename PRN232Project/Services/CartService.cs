@@ -8,10 +8,12 @@ namespace Services
     public class CartService : ICartService
     {
         private readonly ICartItemRepository _cartItemRepository;
+        private readonly IProductOptionRepository _productOptionRepository;
 
-        public CartService(ICartItemRepository cartItemRepository)
+        public CartService(ICartItemRepository cartItemRepository, IProductOptionRepository productOptionRepository)
         {
             _cartItemRepository = cartItemRepository;
+            _productOptionRepository = productOptionRepository;
         }
 
         public async Task<UserCartResponseDto> GetAllCartItems(int userId) // change parameter ?
@@ -31,9 +33,13 @@ namespace Services
             return CartItemMapper.ToDTO(cartItem);
         }
 
-        public async Task<CartItem> AddToCart(CartItemRequestDto dto)
+        public async Task<CartItem> AddToCart(CartItemRequestDto dto, int userId)
         {
-            return await _cartItemRepository.AddToCartAsync(CartItemMapper.ToEntity(dto));
+            CartItem cartItem = CartItemMapper.ToEntity(dto);
+            cartItem.UserId = userId;
+            cartItem.ProductOptions = await _productOptionRepository.GetByIdsAsync(dto.ProductOptionIds);
+
+            return await _cartItemRepository.AddToCartAsync(cartItem);
         }
 
         public async Task UpdateQuantity(int cartItemId, int quantity)

@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public CartItemProductDto? Product { get; set; }
-        public ProductOptionResponseDto? ProductOption { get; set; }
+        public List<ProductOptionResponseDto>? ProductOptions { get; set; }
         public int Quantity { get; set; }
     }
 

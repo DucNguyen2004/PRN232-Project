@@ -78,6 +78,7 @@ namespace PRN232Project
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IProductOptionRepository, ProductOptionRepository>();
             builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 
             builder.Services.AddScoped<IUserService, UserService>();

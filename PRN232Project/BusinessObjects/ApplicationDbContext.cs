@@ -151,14 +151,25 @@ namespace BusinessObjects
                       .HasForeignKey(ci => ci.ProductId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(ci => ci.ProductOption)
-                    .WithMany(po => po.CartItems)
-                    .HasForeignKey(ci => ci.ProductOptionId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
                 // Ensure unique cart item per user-product combination
                 entity.HasIndex(ci => new { ci.UserId, ci.ProductId }).IsUnique();
             });
+            modelBuilder.Entity<CartItem>()
+                .HasMany(ci => ci.ProductOptions)
+                .WithMany(po => po.CartItems)
+                .UsingEntity<Dictionary<string, object>>(
+                    "CartItemProductOptions",
+                    j => j
+                        .HasOne<ProductOption>()
+                        .WithMany()
+                        .HasForeignKey("ProductOptionsId")
+                        .OnDelete(DeleteBehavior.Restrict),
+                    j => j
+                        .HasOne<CartItem>()
+                        .WithMany()
+                        .HasForeignKey("CartItemsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                );
 
             // WishlistItem Configuration
             modelBuilder.Entity<WishlistItem>(entity =>
