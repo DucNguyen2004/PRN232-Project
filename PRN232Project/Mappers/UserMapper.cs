@@ -1,18 +1,10 @@
 ﻿using BusinessObjects;
 using DTOs;
-using Repositories;
 
 namespace Mappers
 {
     public class UserMapper
     {
-        private readonly IRoleRepository _roleRepository;
-
-        public UserMapper(IRoleRepository roleRepository)
-        {
-            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-        }
-
         public static UserResponseDto ToDTO(User entity)
         {
             return new UserResponseDto
@@ -45,7 +37,7 @@ namespace Mappers
                 Status = dto.Status,
                 Roles = dto.RoleIds != null ? [.. dto.RoleIds.Select(roleId => new Role { Id = roleId })] : [],
                 CreatedAt = dto.CreatedAt,
-                UpdatedAt = dto.UpdatedAt
+                UpdatedAt = DateTime.Now
             };
         }
     }

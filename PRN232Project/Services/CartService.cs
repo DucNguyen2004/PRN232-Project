@@ -35,9 +35,15 @@ namespace Services
 
         public async Task<CartItem> AddToCart(CartItemRequestDto dto, int userId)
         {
-            CartItem cartItem = CartItemMapper.ToEntity(dto);
-            cartItem.UserId = userId;
-            cartItem.ProductOptions = await _productOptionRepository.GetByIdsAsync(dto.ProductOptionIds);
+            var productOptions = await _productOptionRepository.GetByIdsAsync(dto.ProductOptionIds);
+
+            var cartItem = new CartItem
+            {
+                Quantity = dto.Quantity,
+                ProductId = dto.ProductId,
+                UserId = userId,
+                ProductOptions = productOptions
+            };
 
             return await _cartItemRepository.AddToCartAsync(cartItem);
         }
@@ -59,9 +65,9 @@ namespace Services
             await _cartItemRepository.DeleteByUserIdAsync(userId);
         }
 
-        public async Task<bool> IsCartItemExisted(int userId, int productId)
+        public async Task<bool> IsCartItemExisted(int userId, int productId, List<int> optionIds)
         {
-            return await _cartItemRepository.ExistsAsync(userId, productId);
+            return await _cartItemRepository.ExistsAsync(userId, productId, optionIds);
         }
     }
 }

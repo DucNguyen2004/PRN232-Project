@@ -55,9 +55,15 @@ namespace Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var item = await _context.CartItems.FindAsync(id);
+            var item = await _context.CartItems
+                .Include(ci => ci.ProductOptions)
+                .FirstOrDefaultAsync(ci => ci.Id == id);
+
             if (item != null)
             {
+                item.ProductOptions.Clear();
+                await _context.SaveChangesAsync();
+
                 _context.CartItems.Remove(item);
                 await _context.SaveChangesAsync();
             }
@@ -65,14 +71,38 @@ namespace Repositories
 
         public async Task DeleteByUserIdAsync(int userId)
         {
-            var items = await _context.CartItems.Where(c => c.UserId == userId).ToListAsync();
+            var items = await _context.CartItems
+                .Include(ci => ci.ProductOptions)
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
+
+            foreach (var item in items)
+            {
+                item.ProductOptions.Clear();
+            }
+            await _context.SaveChangesAsync();
+
             _context.CartItems.RemoveRange(items);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> ExistsAsync(int userId, int productId)
+        public async Task<bool> ExistsAsync(int userId, int productId, List<int> productOptionIds)
         {
-            return await _context.CartItems.AnyAsync(c => c.UserId == userId && c.ProductId == productId);
+            var cartItems = await _context.CartItems
+                .Include(ci => ci.ProductOptions)
+                .Where(ci => ci.UserId == userId && ci.ProductId == productId)
+                .ToListAsync();
+
+            foreach (var item in cartItems)
+            {
+                var existingOptionIds = item.ProductOptions.Select(po => po.Id).OrderBy(id => id).ToList();
+                if (existingOptionIds.SequenceEqual(productOptionIds.OrderBy(id => id)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

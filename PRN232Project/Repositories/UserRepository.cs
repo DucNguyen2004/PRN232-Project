@@ -40,6 +40,24 @@ namespace Repositories
                 .ToListAsync();
         }
 
+        public async Task<(IEnumerable<User> Items, int Total)> GetPagedAsync(int page, int pageSize)
+        {
+            var query = _context.Users
+                .Include(u => u.Roles)
+                .Include(u => u.Addresses)
+                .Include(u => u.Orders)
+                .AsQueryable();
+
+            int total = await query.CountAsync();
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, total);
+        }
+
+
         public async Task<User> AddAsync(User user)
         {
             if (user == null) throw new ArgumentNullException(nameof(user));
@@ -76,7 +94,7 @@ namespace Repositories
             if (user == null)
                 throw new KeyNotFoundException($"User with Id {id} not found.");
 
-            _context.Users.Remove(user);
+            user.Status = "DELETED";
             await _context.SaveChangesAsync();
         }
     }

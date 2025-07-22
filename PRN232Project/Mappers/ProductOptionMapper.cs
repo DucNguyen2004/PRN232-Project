@@ -9,6 +9,7 @@ namespace Mappers
         {
             return new ProductOptionResponseDto
             {
+                Id = entity.Id,
                 Name = entity.OptionValue.Option.Name,
                 Type = entity.OptionValue.Name,
                 DeltaPrice = entity.DeltaPrice

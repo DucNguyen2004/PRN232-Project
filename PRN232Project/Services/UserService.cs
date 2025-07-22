@@ -27,6 +27,20 @@ namespace Services
             return users.Select(u => Mappers.UserMapper.ToDTO(u));
         }
 
+        public async Task<PaginationResponseDto<UserResponseDto>> GetUsersPagedAsync(PaginationRequestDto request)
+        {
+            var (users, total) = await _userRepository.GetPagedAsync(request.Page, request.PageSize);
+
+            return new PaginationResponseDto<UserResponseDto>
+            {
+                Items = users.Select(Mappers.UserMapper.ToDTO),
+                TotalItems = total,
+                TotalPages = (int)Math.Ceiling((double)total / request.PageSize),
+                Page = request.Page,
+                PageSize = request.PageSize
+            };
+        }
+
         public async Task<User> CreateUserAsync(UserRequestDto dto)
         {
             var user = Mappers.UserMapper.ToEntity(dto);
@@ -43,6 +57,7 @@ namespace Services
 
             var roles = await _roleRepository.GetAllAsync();
             updatedUser.Roles = roles.Where(r => dto.RoleIds.Contains(r.Id)).ToList();
+            updatedUser.Password = await _userRepository.GetByIdAsync(id).ContinueWith(t => t.Result.Password);
 
             await _userRepository.UpdateAsync(id, updatedUser);
         }

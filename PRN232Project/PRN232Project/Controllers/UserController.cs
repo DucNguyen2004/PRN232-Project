@@ -30,6 +30,17 @@ namespace PRN232Project.Controllers
             return OkResponse(users);
         }
 
+        [HttpGet("paged")]
+        public async Task<ActionResult<ApiResponseDto<PaginationResponseDto<UserResponseDto>>>> GetPagedUsers([FromQuery] PaginationRequestDto request)
+        {
+            var result = await _userService.GetUsersPagedAsync(request);
+            if (result == null || !result.Items.Any())
+            {
+                throw ProblemException.NotFound("No user found.");
+            }
+            return OkResponse(result);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ApiResponseDto<UserResponseDto>>> GetUserById(int id)
         {

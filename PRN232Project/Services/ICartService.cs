@@ -11,6 +11,6 @@ namespace Services
         Task UpdateQuantity(int cartItemId, int quantity);
         Task DeleteCartItem(int cartItemId);
         Task ClearCart(int userId);
-        Task<bool> IsCartItemExisted(int userId, int productId);
+        Task<bool> IsCartItemExisted(int userId, int productId, List<int> optionIds);
     }
 }

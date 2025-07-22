@@ -65,9 +65,9 @@ namespace PRN232Project.Controllers
                 throw ProblemException.BadRequest("Invalid or missing user ID in token.");
             }
 
-            if (await _cartService.IsCartItemExisted(userId, dto.ProductId))
+            if (await _cartService.IsCartItemExisted(userId, dto.ProductId, dto.ProductOptionIds))
             {
-                throw ProblemException.BadRequest("This product is already in the cart.");
+                throw ProblemException.BadRequest("This product with selected options is already in the cart.");
             }
 
             CartItem cartItem = await _cartService.AddToCart(dto, userId);
